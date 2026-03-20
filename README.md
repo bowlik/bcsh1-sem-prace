@@ -81,10 +81,10 @@ Tahová 2D fantasy hra pro dva hráče na jednom PC. Každý hráč ovládá tý
 ### Vlastní assety
 | Asset | Autor |
 |---|---|
-| Grafika myší a animace | autor: [Vaše jméno] |
-| Mapy / terény (PNG soubory) | autor: [Vaše jméno] |
-| UI elementy (ikony kouzel, tlačítka) | autor: [Vaše jméno] |
-| Efekty kouzel (ohnivá koule, blesk) | autor: [Vaše jméno] |
+| Grafika myší a animace | autor:  |
+| Mapy / terény (PNG soubory) | autor: ] |
+| UI elementy (ikony kouzel, tlačítka) | autor:  |
+| Efekty kouzel (ohnivá koule, blesk) | autor:  |
 
 ### Free assety z Unity Asset Store
 | Název assetu | Autor / Odkaz | Licence |
