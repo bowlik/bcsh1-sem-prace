@@ -80,8 +80,8 @@
     <Compile Include="Assets\Scripts\UI\EndScreenController.cs" />
     <Compile Include="Assets\Scripts\Weapons\TeleportWeapon.cs" />
     <Compile Include="Assets\Scripts\UI\HUDController.cs" />
-    <Compile Include="Assets\Scripts\Core\GameManager.cs" />
     <Compile Include="Assets\Scripts\Weapons\WeaponManager.cs" />
+    <Compile Include="Assets\Scripts\Core\GameManager.cs" />
     <Compile Include="Assets\Scripts\Terrain\TerrainManager.cs" />
     <Compile Include="Assets\Scripts\Weapons\FireballWeapon.cs" />
     <Compile Include="Assets\Scripts\Weapons\MeleeWeapon.cs" />
