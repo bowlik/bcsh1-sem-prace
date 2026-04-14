@@ -1,0 +1,12 @@
+# Unity - důležité ignorovat!
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+UserSettings/
+MemoryCaptures/
+
+# Unity meta soubory (volitelné)
+# *.meta
