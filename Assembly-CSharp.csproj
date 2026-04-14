@@ -69,8 +69,10 @@
     <Compile Include="Assets\Scripts\Weapons\BowWeapon.cs" />
     <Compile Include="Assets\Scripts\Weapons\MagicBombWeapon.cs" />
     <Compile Include="Assets\Scripts\Weapons\FireballProjectile.cs" />
+    <Compile Include="Assets\Scripts\Core\DeathZone.cs" />
     <Compile Include="Assets\Scripts\UI\MapSelectButton.cs" />
     <Compile Include="Assets\Scripts\Weapons\LightningWeapon.cs" />
+    <Compile Include="Assets\Scripts\Core\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Core\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\Weapons\ArrowProjectile.cs" />
     <Compile Include="Assets\Scripts\Weapons\Projectile.cs" />

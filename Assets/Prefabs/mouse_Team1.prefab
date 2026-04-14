@@ -13,6 +13,14 @@ GameObject:
   - component: {fileID: 3895361158633940674}
   - component: {fileID: 692211542522212513}
   - component: {fileID: 3703437634570992816}
+  - component: {fileID: 6504828306554999667}
+  - component: {fileID: 132763821427404193}
+  - component: {fileID: 4231921445851758177}
+  - component: {fileID: 2120405926881681117}
+  - component: {fileID: 3408472082110548530}
+  - component: {fileID: 3827885370474909118}
+  - component: {fileID: 7025823515908596699}
+  - component: {fileID: 2777502120927198628}
   m_Layer: 0
   m_Name: mouse_Team1
   m_TagString: Untagged
@@ -84,7 +92,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -5933261652459859058, guid: 3cfd0b40d479c3b41b927f3d5adb464f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -120,7 +128,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &692211542522212513
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -156,7 +164,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.5, y: 0.8}
   m_Direction: 0
 --- !u!114 &3703437634570992816
 MonoBehaviour:
@@ -175,3 +183,147 @@ MonoBehaviour:
   maxHp: 100
   currentHp: 0
   team: 1
+--- !u!114 &6504828306554999667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690120093106071802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbe0f9e46addf0f41bb635ce545a72da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponManager
+  weapons:
+  - {fileID: 132763821427404193}
+  - {fileID: 4231921445851758177}
+  - {fileID: 2120405926881681117}
+  - {fileID: 3408472082110548530}
+  - {fileID: 3827885370474909118}
+  - {fileID: 7025823515908596699}
+  - {fileID: 2777502120927198628}
+--- !u!114 &132763821427404193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690120093106071802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88080e0873af2ca489ea922aa726ba05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireballWeapon
+  weaponName: "Zbra\u0148"
+  shootForce: 10
+  projectilePrefab: {fileID: 0}
+  arcForce: 5
+--- !u!114 &4231921445851758177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690120093106071802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7806090bd18eb174a9e97943565aafcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightningWeapon
+  weaponName: "Zbra\u0148"
+  shootForce: 10
+  projectilePrefab: {fileID: 0}
+  damage: 50
+  range: 20
+  lightningLine: {fileID: 0}
+  flashDuration: 0.2
+--- !u!114 &2120405926881681117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690120093106071802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211afd5e04ceea049bfb45879d39871b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BowWeapon
+  weaponName: "Zbra\u0148"
+  shootForce: 10
+  projectilePrefab: {fileID: 0}
+  minForce: 5
+  maxForce: 20
+  chargeSpeed: 10
+  aimLine: {fileID: 0}
+--- !u!114 &3408472082110548530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690120093106071802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f35e0d1a79f40274993bf88280844919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MagicBombWeapon
+  weaponName: "Zbra\u0148"
+  shootForce: 10
+  projectilePrefab: {fileID: 0}
+  throwForce: 8
+  timerDuration: 3
+--- !u!114 &3827885370474909118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690120093106071802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615afe561ddcb8049a9f60e69f4ba2b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeleportWeapon
+  weaponName: "Zbra\u0148"
+  shootForce: 10
+  projectilePrefab: {fileID: 0}
+  teleportEffectPrefab: {fileID: 0}
+--- !u!114 &7025823515908596699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690120093106071802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62050b26f1241ca4fb008f3ebf59904d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
+  weaponName: "Zbra\u0148"
+  shootForce: 10
+  projectilePrefab: {fileID: 0}
+  damage: 35
+  knockbackForce: 12
+  hitRange: 1.5
+--- !u!114 &2777502120927198628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690120093106071802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e945a769ba7504682567c045b508ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickaxeWeapon
+  weaponName: "Zbra\u0148"
+  shootForce: 10
+  projectilePrefab: {fileID: 0}
+  destroyRadius: 0.8
+  swingCount: 3
+  swingCooldown: 0.4
+  reach: 1.5
