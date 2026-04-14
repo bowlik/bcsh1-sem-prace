@@ -18,6 +18,7 @@ public class MouseController : MonoBehaviour
     private Rigidbody2D _rb;
     private bool _isActive = false;
     private bool _isGrounded = false;
+    public bool IsActive => _isActive;
 
     private void Awake()
     {
