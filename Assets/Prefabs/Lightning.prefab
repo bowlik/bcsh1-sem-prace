@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8741588557456858106
+--- !u!1 &3903667438743134922
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2443505738999472609}
-  - component: {fileID: 70088788767801487}
-  - component: {fileID: 2639768634799342794}
+  - component: {fileID: 6972394235191055778}
+  - component: {fileID: 4905477611691980511}
+  - component: {fileID: 3846552440091166299}
   m_Layer: 0
   m_Name: Lightning
   m_TagString: Untagged
@@ -18,13 +18,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2443505738999472609
+--- !u!4 &6972394235191055778
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8741588557456858106}
+  m_GameObject: {fileID: 3903667438743134922}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.05641, y: -0.05083, z: 0}
@@ -33,14 +33,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!120 &70088788767801487
+--- !u!120 &4905477611691980511
 LineRenderer:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8741588557456858106}
+  m_GameObject: {fileID: 3903667438743134922}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -152,13 +152,13 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &2639768634799342794
+--- !u!114 &3846552440091166299
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8741588557456858106}
+  m_GameObject: {fileID: 3903667438743134922}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7806090bd18eb174a9e97943565aafcb, type: 3}
@@ -169,5 +169,5 @@ MonoBehaviour:
   projectilePrefab: {fileID: 0}
   damage: 50
   range: 20
-  lightningLine: {fileID: 70088788767801487}
+  lightningLine: {fileID: 4905477611691980511}
   flashDuration: 0.2

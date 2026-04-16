@@ -17,10 +17,12 @@ public class MouseController : MonoBehaviour
 
     [Header("UI")]
     public GameObject hpBarPrefab;
+    public GameObject activeArrow;
 
     private Rigidbody2D _rb;
     private bool _isActive = false;
     private bool _isGrounded = false;
+
     public bool IsActive => _isActive;
 
     private void Awake()
@@ -33,14 +35,10 @@ public class MouseController : MonoBehaviour
     {
         GameManager.Instance.RegisterMouse(this, team);
 
-        // Vytvoø HP bar nad myší
         if (hpBarPrefab != null)
         {
             GameObject bar = Instantiate(hpBarPrefab, transform);
-            // Pozice 1.2f nad støedem objektu
             bar.transform.localPosition = new Vector3(0, 1.2f, 0);
-
-            // Inicializace HP baru, pokud komponenta existuje
             bar.GetComponent<HPBar>()?.Initialize(this);
         }
     }
@@ -48,7 +46,6 @@ public class MouseController : MonoBehaviour
     private void Update()
     {
         if (!_isActive) return;
-
         HandleMovement();
         HandleJump();
     }
@@ -70,7 +67,6 @@ public class MouseController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        // Zkontroluj, jestli stojíme na nìèem (detekce kolize zespodu)
         foreach (ContactPoint2D contact in col.contacts)
         {
             if (contact.normal.y > 0.5f)
@@ -84,7 +80,6 @@ public class MouseController : MonoBehaviour
     public void SetActive(bool active)
     {
         _isActive = active;
-
         if (activeArrow != null)
             activeArrow.SetActive(active);
     }
