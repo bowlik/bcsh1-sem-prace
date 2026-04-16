@@ -9,6 +9,9 @@ public class Projectile : MonoBehaviour
     public bool hasTimer = false;
     public float timerDuration = 3f;
 
+    [Header("Efekty")]
+    public GameObject explosionEffectPrefab;
+
     private float _timer;
     private bool _exploded = false;
 
@@ -37,6 +40,13 @@ public class Projectile : MonoBehaviour
         if (_exploded) return;
         _exploded = true;
 
+        // particle efekt výbuchu
+        if (explosionEffectPrefab != null)
+            Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+
+        // zvuk
+        AudioManager.Instance?.PlayExplosion();
+
         // znièí terén
         TerrainManager.Instance?.DestroyTerrain(transform.position, explosionRadius);
 
@@ -46,7 +56,6 @@ public class Projectile : MonoBehaviour
         {
             if (hit.TryGetComponent<MouseController>(out var mouse))
             {
-                // damage klesá s vzdáleností
                 float dist = Vector2.Distance(transform.position, hit.transform.position);
                 float falloff = 1f - Mathf.Clamp01(dist / explosionRadius);
                 int finalDamage = Mathf.RoundToInt(damage * falloff);
@@ -54,7 +63,6 @@ public class Projectile : MonoBehaviour
             }
         }
 
-        // TODO: pøidat particle efekt výbuchu
         Destroy(gameObject);
     }
 

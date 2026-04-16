@@ -9,6 +9,9 @@ public class PickaxeWeapon : WeaponBase
     public float swingCooldown = 0.4f;    // pauza mezi údery
     public float reach = 1.5f;            // dosah od myši
 
+    [Header("Efekty")]
+    public GameObject dirtEffectPrefab;   // prefab èástic hlíny
+
     private int _swingsLeft;
     private bool _onCooldown = false;
 
@@ -24,11 +27,11 @@ public class PickaxeWeapon : WeaponBase
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorld.z = 0f;
 
-        // zkontroluj jestli kliknul v dosahu myši
+        // Zkontroluj, jestli hráè kliknul v dosahu
         float dist = Vector2.Distance(Owner.transform.position, mouseWorld);
         if (dist > reach)
         {
-            Debug.Log("Pøíliš daleko! Klikni blíže k myši.");
+            Debug.Log("Pøíliš daleko! Klikni blíže k postavì.");
             return;
         }
 
@@ -39,10 +42,17 @@ public class PickaxeWeapon : WeaponBase
     {
         _onCooldown = true;
 
-        // vykopni díru do terénu
-        TerrainManager.Instance?.DestroyTerrain(targetPos, destroyRadius);
+        // 1. Vizuální efekt (èástice)
+        if (dirtEffectPrefab != null)
+        {
+            Instantiate(dirtEffectPrefab, targetPos, Quaternion.identity);
+        }
 
-        // TODO: pøidat animaci švihu / zvuk
+        // 2. Zvukový efekt pøes AudioManager
+        AudioManager.Instance?.PlayPickaxe();
+
+        // 3. Samotná destrukce terénu
+        TerrainManager.Instance?.DestroyTerrain(targetPos, destroyRadius);
 
         _swingsLeft--;
         Debug.Log($"Krumpáè: zbývá {_swingsLeft} úderù");
@@ -50,22 +60,24 @@ public class PickaxeWeapon : WeaponBase
         yield return new WaitForSeconds(swingCooldown);
         _onCooldown = false;
 
-        // po vyèerpání úderù ukonèi tah
+        // Po vyèerpání úderù ukonèi tah
         if (_swingsLeft <= 0)
         {
-            _swingsLeft = swingCount;
+            _swingsLeft = swingCount; // Reset pro další kolo
             TurnManager.Instance?.EndTurn();
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        // zobraz dosah v editoru
+        // Zobraz dosah v editoru (dosah kopání a velikost díry)
         if (Owner == null) return;
+
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(Owner.transform.position, reach);
 
+        // Poznámka: destroyRadius je zobrazen u myši, zde jen ilustraènì u hráèe
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(Owner.transform.position, destroyRadius);
+        Gizmos.DrawWireSphere(transform.position, destroyRadius);
     }
 }
