@@ -140,7 +140,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a351b1abe2566f54ab2a65d87ffe9c08, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e782fcb1d10f3794384d1b3ee26eef02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouseController
-  moveSpeed: 4
+  moveSpeed: 2
   jumpForce: 8
   maxHp: 100
   currentHp: 0
