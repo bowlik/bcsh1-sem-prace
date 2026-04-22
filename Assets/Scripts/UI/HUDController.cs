@@ -25,7 +25,12 @@ public class HUDController : MonoBehaviour
         if (activeMouse != null)
         {
             var wm = activeMouse.GetComponent<WeaponManager>();
-            // TODO: zobrazit název zbranì
+            if (wm != null)
+            {
+                var weapon = wm.GetCurrentWeapon();
+                if (weapon != null && weaponText != null)
+                    weaponText.text = weapon.weaponName;
+            }
         }
     }
 }

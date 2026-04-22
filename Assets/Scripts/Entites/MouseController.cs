@@ -39,6 +39,11 @@ public class MouseController : MonoBehaviour
     {
         GameManager.Instance.RegisterMouse(this, team);
 
+        // inicializuj WeaponManager
+        var weaponManager = GetComponent<WeaponManager>();
+        if (weaponManager != null)
+            weaponManager.Initialize(this);
+
         if (hpBarPrefab != null)
         {
             GameObject bar = Instantiate(hpBarPrefab, transform);
@@ -59,11 +64,9 @@ public class MouseController : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         _rb.linearVelocity = new Vector2(horizontal * moveSpeed, _rb.linearVelocity.y);
 
-        // animace chùze
         if (_animator != null)
             _animator.SetBool("isWalking", Mathf.Abs(horizontal) > 0.1f);
 
-        // otoèení sprita podle smìru pohybu
         if (_spriteRenderer != null)
         {
             if (horizontal > 0.1f) _spriteRenderer.flipX = false;

@@ -8,13 +8,28 @@ public class WeaponManager : MonoBehaviour
     private int _currentIndex = 0;
     private MouseController _owner;
 
+    public int CurrentIndex => _currentIndex;
+
+    public WeaponBase GetCurrentWeapon()
+    {
+        if (weapons == null || weapons.Length == 0) return null;
+        return weapons[_currentIndex];
+    }
+
     public void Initialize(MouseController owner)
     {
         _owner = owner;
-        foreach (var w in weapons)
-            w.Initialize(owner);
 
-        SelectWeapon(0);
+        foreach (var w in weapons)
+        {
+            if (w != null)
+            {
+                w.Initialize(owner);
+                w.enabled = false; // vypni všechny na zaèátku
+            }
+        }
+
+        SelectWeapon(0); // zapni první zbraò
     }
 
     private void Update()
@@ -35,12 +50,18 @@ public class WeaponManager : MonoBehaviour
 
         // vypni všechny
         foreach (var w in weapons)
-            w.enabled = false;
+        {
+            if (w != null)
+                w.enabled = false;
+        }
 
         // zapni vybranou
         _currentIndex = index;
-        weapons[_currentIndex].enabled = true;
 
-        Debug.Log($"Zvolena zbraò: {weapons[_currentIndex].weaponName}");
+        if (weapons[_currentIndex] != null)
+        {
+            weapons[_currentIndex].enabled = true;
+            Debug.Log($"Zvolena zbraò: {weapons[_currentIndex].weaponName}");
+        }
     }
 }
