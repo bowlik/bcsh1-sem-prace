@@ -5,7 +5,7 @@ using UnityEngine;
 public class MouseController : MonoBehaviour
 {
     [Header("Pohyb")]
-    public float moveSpeed = 4f;
+    public float moveSpeed = 2f;
     public float jumpForce = 8f;
 
     [Header("HP")]
@@ -20,6 +20,8 @@ public class MouseController : MonoBehaviour
     public GameObject activeArrow;
 
     private Rigidbody2D _rb;
+    private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
     private bool _isActive = false;
     private bool _isGrounded = false;
 
@@ -28,6 +30,8 @@ public class MouseController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         currentHp = maxHp;
     }
 
@@ -54,6 +58,17 @@ public class MouseController : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
         _rb.linearVelocity = new Vector2(horizontal * moveSpeed, _rb.linearVelocity.y);
+
+        // animace chùze
+        if (_animator != null)
+            _animator.SetBool("isWalking", Mathf.Abs(horizontal) > 0.1f);
+
+        // otoèení sprita podle smìru pohybu
+        if (_spriteRenderer != null)
+        {
+            if (horizontal > 0.1f) _spriteRenderer.flipX = false;
+            else if (horizontal < -0.1f) _spriteRenderer.flipX = true;
+        }
     }
 
     private void HandleJump()
@@ -62,6 +77,9 @@ public class MouseController : MonoBehaviour
         {
             _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             _isGrounded = false;
+
+            if (_animator != null)
+                _animator.SetBool("isGrounded", false);
         }
     }
 
@@ -72,6 +90,9 @@ public class MouseController : MonoBehaviour
             if (contact.normal.y > 0.5f)
             {
                 _isGrounded = true;
+
+                if (_animator != null)
+                    _animator.SetBool("isGrounded", true);
                 break;
             }
         }
@@ -94,4 +115,9 @@ public class MouseController : MonoBehaviour
             Die();
     }
 
+    private void Die()
+    {
+        GameManager.Instance.OnMouseDied(this);
+        Destroy(gameObject);
+    }
 }
