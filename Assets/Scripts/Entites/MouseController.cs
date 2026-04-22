@@ -94,9 +94,4 @@ public class MouseController : MonoBehaviour
             Die();
     }
 
-    private void Die()
-    {
-        GameManager.Instance.OnMouseDied(this);
-        Destroy(gameObject);
-    }
 }
