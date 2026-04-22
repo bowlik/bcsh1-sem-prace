@@ -11,36 +11,37 @@ public class MainMenuController : MonoBehaviour
     [Header("Texty")]
     public TextMeshProUGUI scoreText;
 
-    [Header("Výbìr mapy")]
-    public MapSelectButton[] mapButtons;
-
     private void Start()
     {
-        scorePanel.SetActive(false);
-        mapPanel.SetActive(false);
-
-        // nastav výchozí mapu
-        if (MapSelector.SelectedMap == null && mapButtons.Length > 0)
-            MapSelector.SelectedMap = mapButtons[0].mapTexture;
+        if (scorePanel != null) scorePanel.SetActive(false);
+        if (mapPanel != null) mapPanel.SetActive(false);
     }
-
-    // --- Tlaèítka ---
 
     public void OnPlayClicked()
     {
-        SceneManager.LoadScene("GameScene");
+        string scene = MapSelector.SelectedScene;
+
+        if (string.IsNullOrEmpty(scene))
+            scene = "GameScene_Goldmine";
+
+        Debug.Log($"Naèítám scénu: {scene}");
+        SceneManager.LoadScene(scene);
     }
 
     public void OnMapClicked()
     {
-        mapPanel.SetActive(!mapPanel.activeSelf);
-        scorePanel.SetActive(false);
+        if (mapPanel != null)
+            mapPanel.SetActive(!mapPanel.activeSelf);
+        if (scorePanel != null)
+            scorePanel.SetActive(false);
     }
 
     public void OnScoreClicked()
     {
-        scorePanel.SetActive(!scorePanel.activeSelf);
-        mapPanel.SetActive(false);
+        if (scorePanel != null)
+            scorePanel.SetActive(!scorePanel.activeSelf);
+        if (mapPanel != null)
+            mapPanel.SetActive(false);
         RefreshScore();
     }
 
@@ -49,8 +50,6 @@ public class MainMenuController : MonoBehaviour
         Application.Quit();
         Debug.Log("Hra ukonèena");
     }
-
-    // --- Skóre ---
 
     private void RefreshScore()
     {

@@ -776,8 +776,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 10, y: 0}
-  m_SizeDelta: {x: 861.7225, y: 460.8141}
+  m_AnchoredPosition: {x: 10, y: -50}
+  m_SizeDelta: {x: 700, y: 350}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &473032324
 MonoBehaviour:
@@ -854,10 +854,6 @@ MonoBehaviour:
   scorePanel: {fileID: 799971317}
   mapPanel: {fileID: 1168246599}
   scoreText: {fileID: 1683660782}
-  mapButtons:
-  - {fileID: 1670463229}
-  - {fileID: 709601698}
-  - {fileID: 616230344}
 --- !u!114 &536127104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1016,9 +1012,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e475c379bbebe4097c9488225c7682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapSelectButton
-  mapTexture: {fileID: 0}
+  sceneName: GameScene_Goldmine
   mapName: Mapa
   previewImage: {fileID: 0}
+  previewTexture: {fileID: 0}
   nameText: {fileID: 0}
 --- !u!114 &616230345
 MonoBehaviour:
@@ -1256,9 +1253,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e475c379bbebe4097c9488225c7682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapSelectButton
-  mapTexture: {fileID: 0}
+  sceneName: GameScene_Goldmine
   mapName: Mapa
   previewImage: {fileID: 0}
+  previewTexture: {fileID: 0}
   nameText: {fileID: 0}
 --- !u!1 &799971317
 GameObject:
@@ -2746,9 +2744,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e475c379bbebe4097c9488225c7682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapSelectButton
-  mapTexture: {fileID: 0}
-  mapName: Mapa
+  sceneName: GameScene_Goldmine
+  mapName: Goldmine
   previewImage: {fileID: 0}
+  previewTexture: {fileID: 0}
   nameText: {fileID: 0}
 --- !u!1 &1683660781
 GameObject:
