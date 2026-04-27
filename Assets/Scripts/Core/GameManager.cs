@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public List<MouseController> Team1 { get; private set; } = new();
     public List<MouseController> Team2 { get; private set; } = new();
+
+    public int _roundCount = 0;
 
     private void Awake()
     {
@@ -33,14 +37,26 @@ public class GameManager : MonoBehaviour
         Team2.Remove(mouse);
 
         if (Team1.Count == 0)
-        {
-            Debug.Log("Vyhr·l Hr·Ë 2!");
-            // TODO: zobrazit EndScreen
-        }
+            EndGame(2);
         else if (Team2.Count == 0)
-        {
-            Debug.Log("Vyhr·l Hr·Ë 1!");
-            // TODO: zobrazit EndScreen
-        }
+            EndGame(1);
+    }
+
+    private void EndGame(int winner)
+    {
+        Debug.Log($"Vyhr·l Hr·Ë {winner}!");
+
+        GameResult.WinnerTeam = winner;
+        GameResult.RoundsPlayed = _roundCount;
+
+        ScoreManager.Instance?.SaveResult(winner, _roundCount);
+
+        StartCoroutine(LoadEndScreen());
+    }
+
+    private IEnumerator LoadEndScreen()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("EndScene");
     }
 }

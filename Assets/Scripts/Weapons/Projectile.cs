@@ -32,6 +32,10 @@ public class Projectile : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (_exploded) return;
+
+        // ignoruj kolizi s myší která vystøelila
+        if (col.gameObject.CompareTag("Mouse")) return;
+
         if (!hasTimer) Explode();
     }
 
@@ -40,7 +44,9 @@ public class Projectile : MonoBehaviour
         if (_exploded) return;
         _exploded = true;
 
-        // particle efekt výbuchu
+        Debug.Log($"Explode() na pozici {transform.position}, radius: {explosionRadius}");
+
+        // particle efekt
         if (explosionEffectPrefab != null)
             Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
 
@@ -48,17 +54,29 @@ public class Projectile : MonoBehaviour
         AudioManager.Instance?.PlayExplosion();
 
         // znièí terén
-        TerrainManager.Instance?.DestroyTerrain(transform.position, explosionRadius);
+        if (TerrainManager.Instance != null)
+            TerrainManager.Instance.DestroyTerrain(transform.position, explosionRadius);
+        else
+            Debug.LogError("TerrainManager.Instance je null!");
 
         // poškodí myši v polomìru
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(
+            transform.position, explosionRadius);
+
+        Debug.Log($"Nalezeno {hits.Length} colliderù v polomìru {explosionRadius}");
+
         foreach (var hit in hits)
         {
+            Debug.Log($"Zasažen: {hit.gameObject.name}");
+
             if (hit.TryGetComponent<MouseController>(out var mouse))
             {
-                float dist = Vector2.Distance(transform.position, hit.transform.position);
+                float dist = Vector2.Distance(
+                    transform.position, hit.transform.position);
                 float falloff = 1f - Mathf.Clamp01(dist / explosionRadius);
                 int finalDamage = Mathf.RoundToInt(damage * falloff);
+
+                Debug.Log($"Poškození {mouse.gameObject.name}: {finalDamage}");
                 mouse.TakeDamage(finalDamage);
             }
         }

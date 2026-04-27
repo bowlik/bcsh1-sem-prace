@@ -39,7 +39,6 @@ public class MouseController : MonoBehaviour
     {
         GameManager.Instance.RegisterMouse(this, team);
 
-        // inicializuj WeaponManager
         var weaponManager = GetComponent<WeaponManager>();
         if (weaponManager != null)
             weaponManager.Initialize(this);
@@ -57,15 +56,17 @@ public class MouseController : MonoBehaviour
         if (!_isActive) return;
         HandleMovement();
         HandleJump();
+        UpdateAnimator();
     }
 
     private void HandleMovement()
     {
         float horizontal = Input.GetAxis("Horizontal");
-        _rb.linearVelocity = new Vector2(horizontal * moveSpeed, _rb.linearVelocity.y);
+        _rb.linearVelocity = new Vector2(
+            horizontal * moveSpeed, _rb.linearVelocity.y);
 
         if (_animator != null)
-            _animator.SetBool("isWalking", Mathf.Abs(horizontal) > 0.1f);
+            _animator.SetBool("IsWalking", Mathf.Abs(horizontal) > 0.1f);
 
         if (_spriteRenderer != null)
         {
@@ -82,21 +83,43 @@ public class MouseController : MonoBehaviour
             _isGrounded = false;
 
             if (_animator != null)
-                _animator.SetBool("isGrounded", false);
+                _animator.SetBool("IsGrounded", false);
         }
     }
 
+    private void UpdateAnimator()
+    {
+        if (_animator == null) return;
+        _animator.SetFloat("VelocityY", _rb.linearVelocity.y);
+    }
+
     private void OnCollisionEnter2D(Collision2D col)
+    {
+        CheckGrounded(col);
+    }
+
+    private void OnCollisionStay2D(Collision2D col)
+    {
+        CheckGrounded(col);
+    }
+
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        _isGrounded = false;
+        if (_animator != null)
+            _animator.SetBool("IsGrounded", false);
+    }
+
+    private void CheckGrounded(Collision2D col)
     {
         foreach (ContactPoint2D contact in col.contacts)
         {
             if (contact.normal.y > 0.5f)
             {
                 _isGrounded = true;
-
                 if (_animator != null)
-                    _animator.SetBool("isGrounded", true);
-                break;
+                    _animator.SetBool("IsGrounded", true);
+                return;
             }
         }
     }

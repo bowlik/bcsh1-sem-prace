@@ -3,10 +3,12 @@ using UnityEngine;
 public class TeleportWeapon : WeaponBase
 {
     [Header("Teleportace")]
-    public GameObject teleportEffectPrefab; // particle efekt (volitelné)
+    public GameObject teleportEffectPrefab;
 
     protected override void Fire()
     {
+        if (Owner == null) return;
+
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorld.z = 0f;
 
@@ -20,7 +22,8 @@ public class TeleportWeapon : WeaponBase
 
         // efekt na pùvodním místì
         if (teleportEffectPrefab != null)
-            Instantiate(teleportEffectPrefab, Owner.transform.position, Quaternion.identity);
+            Instantiate(teleportEffectPrefab,
+                Owner.transform.position, Quaternion.identity);
 
         // pøesuò myš
         Owner.transform.position = mouseWorld;
@@ -29,6 +32,7 @@ public class TeleportWeapon : WeaponBase
         if (teleportEffectPrefab != null)
             Instantiate(teleportEffectPrefab, mouseWorld, Quaternion.identity);
 
+        Debug.Log("Teleport proveden!");
         TurnManager.Instance?.EndTurn();
     }
 }

@@ -13,6 +13,7 @@ public class TurnManager : MonoBehaviour
     private int _currentMouseIndex = 0;
     private float _timeLeft;
     private bool _turnActive = false;
+    private bool _endingTurn = false;
 
     public MouseController ActiveMouse { get; private set; }
     public float TimeLeft => _timeLeft;
@@ -46,6 +47,8 @@ public class TurnManager : MonoBehaviour
 
     public void StartTurn()
     {
+        _endingTurn = false;
+
         var team = _currentTeam == 1
             ? GameManager.Instance.Team1
             : GameManager.Instance.Team2;
@@ -59,17 +62,29 @@ public class TurnManager : MonoBehaviour
         _timeLeft = turnDuration;
         _turnActive = true;
 
+        GameManager.Instance._roundCount++;
+
         Debug.Log($"Tah hráèe {_currentTeam} – myš {_currentMouseIndex + 1}");
     }
 
     public void EndTurn()
     {
+        // zabrání dvojitému volání
+        if (_endingTurn) return;
+        _endingTurn = true;
         _turnActive = false;
 
         if (ActiveMouse != null)
             ActiveMouse.SetActive(false);
 
-        // pøepni tým a posuò index myší
+        StartCoroutine(EndTurnDelayed());
+    }
+
+    private IEnumerator EndTurnDelayed()
+    {
+        // krátká pauza aby projektil stihl odletìt
+        yield return new WaitForSeconds(1.5f);
+
         if (_currentTeam == 1)
         {
             _currentTeam = 2;
