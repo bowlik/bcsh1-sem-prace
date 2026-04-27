@@ -60,7 +60,7 @@ Tahová 2D fantasy hra pro dva hráče na jednom PC. Každý hráč ovládá tý
 ### UI
 - Hlavní menu – nová hra, výběr mapy, quit
 - HUD – životy myší, aktuální zbraň/kouzlo, časovač tahu, kolo
-- End screen – zobrazení výherce
+- End screen – zobrazení výherce + statistik
 
 ---
 
@@ -81,15 +81,16 @@ Tahová 2D fantasy hra pro dva hráče na jednom PC. Každý hráč ovládá tý
 ### Vlastní assety
 | Asset | Autor |
 |---|---|
-| Grafika myší a animace | autor:  |
-| Mapy / terény (PNG soubory) | autor: ] |
-| UI elementy (ikony kouzel, tlačítka) | autor:  |
-| Efekty kouzel (ohnivá koule, blesk) | autor:  |
+| Grafika myší a animace | autor: Autor |
+| Mapy / terény (PNG soubory) | autor: AI generated |
+| UI elementy (ikony kouzel, tlačítka) | autor: / |
+| Efekty kouzel (ohnivá koule, blesk) | autor: Autor |
 
 ### Free assety z Unity Asset Store
 | Název assetu | Autor / Odkaz | Licence |
 |---|---|---|
-| *(bude doplněno)* | *(bude doplněno)* | Unity Asset Store |
+| Buttons Set | https://assetstore.unity.com/packages/2d/gui/buttons-set-211824 | Unity Asset Store |
+| Alien Tile set | https://assetstore.unity.com/packages/2d/textures-materials/nature/alien-tile-set-116827 | Unity Asset Store |
 
 ---
 
