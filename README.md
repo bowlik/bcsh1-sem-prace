@@ -25,14 +25,9 @@ Tahová 2D fantasy hra pro dva hráče na jednom PC. Každý hráč ovládá my�
 ## 🖼️ Vizuál
 
 vlastní vizuál postav, kreslený v grafickém programu Krita
-idle
-<img width="1408" height="768" alt="mouse_idle" src="https://github.com/user-attachments/assets/7ca25c4c-1f2c-4345-a21d-e30b436a8c60" />
-skok
-<img width="471" height="529" alt="mouse_jump_1" src="https://github.com/user-attachments/assets/abf80322-2c66-4764-b572-a9fe99bb37db" />
-<img width="458" height="545" alt="mouse_jump_2" src="https://github.com/user-attachments/assets/0f8eb9a5-63a2-42b6-84ac-c8b5a83e50f8" />
-pohyb
-<img width="308" height="311" alt="mouse_walk_1" src="https://github.com/user-attachments/assets/adad3a5e-13af-4cc8-b0b7-f3af20869cfe" />
-<img width="394" height="558" alt="mouse_walk_2" src="https://github.com/user-attachments/assets/5b4bcf3f-9195-4bac-b60c-40b936dea015" />
+animace:
+<img width="2760" height="1504" alt="mys animace" src="https://github.com/user-attachments/assets/7d4506e9-40b9-408c-b57e-8c83abeb982a" />
+
 
 Mapy sestavené pomocí ai generovaného pozadí a Tile assetů
 <img width="1476" height="851" alt="Snímek obrazovky 2026-05-06 102609" src="https://github.com/user-attachments/assets/0847fe9a-c350-453e-9fde-75d96b9fe17a" />
