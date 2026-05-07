@@ -112,9 +112,10 @@ GameObject:
   - component: {fileID: 2664907577676417021}
   - component: {fileID: 5183099024040607087}
   - component: {fileID: 1920177734032089727}
+  - component: {fileID: 5522732190053000142}
   m_Layer: 0
   m_Name: mouse_Team2
-  m_TagString: Untagged
+  m_TagString: mouse
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,7 +130,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3, y: 3, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4654810167702319857}
@@ -182,11 +183,11 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 16605eae0c8dd9942b8fe770a6496620, type: 3}
-  m_Color: {r: 0.96981126, g: 0.15919538, b: 0.85870814, a: 1}
-  m_FlipX: 0
+  m_Sprite: {fileID: -3352328181369597518, guid: 3e2084d5ef9d6664ea5e43d17448c189, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 2.56, y: 2.56}
@@ -255,8 +256,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 0.5}
+  m_Offset: {x: -0.1, y: -0.04}
+  m_Size: {x: 1.6, y: 2.8}
   m_Direction: 0
 --- !u!114 &1113271882330676888
 MonoBehaviour:
@@ -291,11 +292,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LightningWeapon
   weaponName: "bleskov\xE1 st\u0159ela"
   shootForce: 10
-  projectilePrefab: {fileID: 887660702582562563, guid: 34af1b384de4fdb488160e2c326bfbbd, type: 3}
+  projectilePrefab: {fileID: 0}
   damage: 50
   range: 20
   lightningLine: {fileID: 0}
   flashDuration: 0.2
+  sparkEffectPrefab: {fileID: 887660702582562563, guid: 34af1b384de4fdb488160e2c326bfbbd, type: 3}
 --- !u!114 &458277960072616941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,7 +312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireballWeapon
   weaponName: "Ohniv\xE1 st\u0159ela"
   shootForce: 10
-  projectilePrefab: {fileID: 8708601297673695576, guid: 6ee3f5de91e1ffc4baebabe0dcd2b936, type: 3}
+  projectilePrefab: {fileID: 4188087198882901417, guid: bb34bbd5739047346bc5a4428d2ca731, type: 3}
   arcForce: 5
 --- !u!114 &5526222674097947074
 MonoBehaviour:
@@ -422,3 +424,25 @@ MonoBehaviour:
   - {fileID: 4661847308248818664}
   - {fileID: 5526222674097947074}
   - {fileID: 5215505270099596091}
+--- !u!95 &5522732190053000142
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486066210630977201}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 93b8261a65b650d4fb0e2f28df5a4f11, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

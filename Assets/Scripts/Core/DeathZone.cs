@@ -7,10 +7,9 @@ public class DeathZone : MonoBehaviour
         if (col.TryGetComponent<MouseController>(out var mouse))
         {
             Debug.Log($"{col.gameObject.name} spadla do propasti!");
-            mouse.TakeDamage(9999); // okamžitá smrt
+            mouse.TakeDamage(9999);
         }
 
-        // znièí i projektily které vyletí mimo
         if (col.TryGetComponent<Projectile>(out _))
             Destroy(col.gameObject);
     }

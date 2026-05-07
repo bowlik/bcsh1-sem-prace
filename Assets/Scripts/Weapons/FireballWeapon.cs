@@ -7,19 +7,31 @@ public class FireballWeapon : WeaponBase
 
     protected override void Fire()
     {
-        if (projectilePrefab == null) return;
+        if (projectilePrefab == null)
+        {
+            Debug.LogError("FireballWeapon: Projectile Prefab není pøiøazený!");
+            return;
+        }
+
+        _hasFired = true;
 
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorld.z = 0f;
+        Vector2 direction = (mouseWorld - Owner.transform.position).normalized;
 
-        Vector2 direction = (mouseWorld - transform.position).normalized;
+        // vìtší offset aby nevybuchl hned
+        Vector3 spawnPos = Owner.transform.position + (Vector3)(direction * 1.2f);
 
-        GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+
+        // pøedej støelce – projektil ignoruje kolizi s ním
+        Projectile p = proj.GetComponent<Projectile>();
+        if (p != null)
+            p.SetShooter(Owner.gameObject);
+
         Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
-
         if (rb != null)
         {
-            // pøidáme mírný oblouk nahoru
             Vector2 force = direction * shootForce + Vector2.up * arcForce;
             rb.AddForce(force, ForceMode2D.Impulse);
         }

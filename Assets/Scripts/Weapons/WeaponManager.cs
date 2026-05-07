@@ -19,24 +19,34 @@ public class WeaponManager : MonoBehaviour
     public void Initialize(MouseController owner)
     {
         _owner = owner;
-
         foreach (var w in weapons)
         {
             if (w != null)
             {
                 w.Initialize(owner);
-                w.enabled = false; // vypni všechny na zaèátku
+                w.enabled = false;
             }
         }
+        SelectWeapon(0);
+    }
 
-        SelectWeapon(0); // zapni první zbraò
+    public void ResetWeapons()
+    {
+        foreach (var w in weapons)
+        {
+            if (w != null)
+            {
+                w.enabled = false;
+                w.ResetFired();
+            }
+        }
+        SelectWeapon(_currentIndex);
     }
 
     private void Update()
     {
         if (_owner == null || !_owner.IsActive) return;
 
-        // pøepínání zbraní klávesami 1–7
         for (int i = 0; i < weapons.Length; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
@@ -48,14 +58,12 @@ public class WeaponManager : MonoBehaviour
     {
         if (index < 0 || index >= weapons.Length) return;
 
-        // vypni všechny
         foreach (var w in weapons)
         {
             if (w != null)
                 w.enabled = false;
         }
 
-        // zapni vybranou
         _currentIndex = index;
 
         if (weapons[_currentIndex] != null)

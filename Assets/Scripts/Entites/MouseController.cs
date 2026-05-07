@@ -24,6 +24,8 @@ public class MouseController : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private bool _isActive = false;
     private bool _isGrounded = false;
+    private float _groundedTimer = 0f;
+    private const float GroundedGrace = 0.15f; // buffer èas
 
     public bool IsActive => _isActive;
 
@@ -56,6 +58,7 @@ public class MouseController : MonoBehaviour
         if (!_isActive) return;
         HandleMovement();
         HandleJump();
+        UpdateGroundedTimer();
         UpdateAnimator();
     }
 
@@ -65,14 +68,14 @@ public class MouseController : MonoBehaviour
         _rb.linearVelocity = new Vector2(
             horizontal * moveSpeed, _rb.linearVelocity.y);
 
-        if (_animator != null)
-            _animator.SetBool("IsWalking", Mathf.Abs(horizontal) > 0.1f);
-
         if (_spriteRenderer != null)
         {
             if (horizontal > 0.1f) _spriteRenderer.flipX = false;
             else if (horizontal < -0.1f) _spriteRenderer.flipX = true;
         }
+
+        if (_animator != null && _isGrounded)
+            _animator.SetBool("IsWalking", Mathf.Abs(horizontal) > 0.1f);
     }
 
     private void HandleJump()
@@ -81,16 +84,40 @@ public class MouseController : MonoBehaviour
         {
             _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             _isGrounded = false;
+            _groundedTimer = 0f;
 
             if (_animator != null)
+            {
                 _animator.SetBool("IsGrounded", false);
+                _animator.SetBool("IsWalking", false);
+            }
+        }
+    }
+
+    private void UpdateGroundedTimer()
+    {
+        if (_groundedTimer > 0f)
+        {
+            _groundedTimer -= Time.deltaTime;
+            if (_groundedTimer <= 0f)
+            {
+                _isGrounded = false;
+            }
         }
     }
 
     private void UpdateAnimator()
     {
         if (_animator == null) return;
-        _animator.SetFloat("VelocityY", _rb.linearVelocity.y);
+
+        float velocityY = _rb.linearVelocity.y;
+        _animator.SetFloat("VelocityY", velocityY);
+
+        if (!_isGrounded)
+        {
+            _animator.SetBool("IsWalking", false);
+            _animator.SetBool("IsGrounded", false);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -105,18 +132,20 @@ public class MouseController : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D col)
     {
-        _isGrounded = false;
-        if (_animator != null)
-            _animator.SetBool("IsGrounded", false);
+        // místo okamžitého resetu nastavíme timer
+        // myš zùstane "na zemi" ještì 0.15s po opuštìní kontaktu
+        _groundedTimer = GroundedGrace;
     }
 
     private void CheckGrounded(Collision2D col)
     {
         foreach (ContactPoint2D contact in col.contacts)
         {
-            if (contact.normal.y > 0.5f)
+            if (contact.normal.y > 0.3f)
             {
                 _isGrounded = true;
+                _groundedTimer = 0f;
+
                 if (_animator != null)
                     _animator.SetBool("IsGrounded", true);
                 return;

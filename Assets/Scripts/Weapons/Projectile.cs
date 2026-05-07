@@ -14,10 +14,17 @@ public class Projectile : MonoBehaviour
 
     private float _timer;
     private bool _exploded = false;
+    private GameObject _shooter; // myš která vystøelila
 
     private void Start()
     {
         _timer = timerDuration;
+    }
+
+    // zavolej tuto metodu pøi vytvoøení projektilu
+    public void SetShooter(GameObject shooter)
+    {
+        _shooter = shooter;
     }
 
     private void Update()
@@ -33,8 +40,9 @@ public class Projectile : MonoBehaviour
     {
         if (_exploded) return;
 
-        // ignoruj kolizi s myší která vystøelila
-        if (col.gameObject.CompareTag("Mouse")) return;
+        // ignoruj pouze myš která vystøelila
+        // soupeøova myš zpùsobí výbuch!
+        if (col.gameObject == _shooter) return;
 
         if (!hasTimer) Explode();
     }
@@ -44,39 +52,27 @@ public class Projectile : MonoBehaviour
         if (_exploded) return;
         _exploded = true;
 
-        Debug.Log($"Explode() na pozici {transform.position}, radius: {explosionRadius}");
-
-        // particle efekt
         if (explosionEffectPrefab != null)
             Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
 
-        // zvuk
         AudioManager.Instance?.PlayExplosion();
 
-        // znièí terén
         if (TerrainManager.Instance != null)
             TerrainManager.Instance.DestroyTerrain(transform.position, explosionRadius);
         else
             Debug.LogError("TerrainManager.Instance je null!");
 
-        // poškodí myši v polomìru
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             transform.position, explosionRadius);
 
-        Debug.Log($"Nalezeno {hits.Length} colliderù v polomìru {explosionRadius}");
-
         foreach (var hit in hits)
         {
-            Debug.Log($"Zasažen: {hit.gameObject.name}");
-
             if (hit.TryGetComponent<MouseController>(out var mouse))
             {
                 float dist = Vector2.Distance(
                     transform.position, hit.transform.position);
                 float falloff = 1f - Mathf.Clamp01(dist / explosionRadius);
                 int finalDamage = Mathf.RoundToInt(damage * falloff);
-
-                Debug.Log($"Poškození {mouse.gameObject.name}: {finalDamage}");
                 mouse.TakeDamage(finalDamage);
             }
         }

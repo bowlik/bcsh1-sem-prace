@@ -5,8 +5,9 @@ public class TerrainManager : MonoBehaviour
 {
     public static TerrainManager Instance { get; private set; }
 
-    [Header("Tilemap")]
+    [Header("Tilemaps")]
     public Tilemap terrainTilemap;
+    public Tilemap backgroundTilemap;
 
     private void Awake()
     {
@@ -21,39 +22,59 @@ public class TerrainManager : MonoBehaviour
     private void Start()
     {
         if (terrainTilemap == null)
+        {
             Debug.LogError("TerrainManager: Terrain Tilemap není přiřazený!");
-        else
-            Debug.Log("TerrainManager: inicializován správně ✅");
+            return;
+        }
+
+        if (backgroundTilemap != null)
+            CopyTerrainToBackground();
+    }
+
+    private void CopyTerrainToBackground()
+    {
+        BoundsInt bounds = terrainTilemap.cellBounds;
+        int copied = 0;
+
+        foreach (Vector3Int pos in bounds.allPositionsWithin)
+        {
+            TileBase tile = terrainTilemap.GetTile(pos);
+            if (tile != null)
+            {
+                backgroundTilemap.SetTile(pos, tile);
+                backgroundTilemap.SetColor(pos, new Color(0.4f, 0.2f, 0.1f, 1f));
+                copied++;
+            }
+        }
+
+        Debug.Log($"Pozadí zkopírováno – {copied} tilů ✅");
     }
 
     public void DestroyTerrain(Vector2 worldPosition, float radius)
     {
-        if (terrainTilemap == null)
-        {
-            Debug.LogError("TerrainManager: terrainTilemap je null!");
-            return;
-        }
+        if (terrainTilemap == null) return;
 
-        Debug.Log($"DestroyTerrain: pozice {worldPosition}, radius {radius}");
+        Vector3 scale = terrainTilemap.transform.lossyScale;
+        Vector3 cellSize = terrainTilemap.cellSize;
+        float realCellWidth = cellSize.x * scale.x;
 
-        int pixelRadius = Mathf.RoundToInt(radius * 2f);
-
+        Vector3Int centerCell = terrainTilemap.WorldToCell(worldPosition);
+        int searchRadius = Mathf.CeilToInt(radius / realCellWidth) + 2;
         int tilesRemoved = 0;
 
-        for (int x = -pixelRadius; x <= pixelRadius; x++)
+        for (int x = -searchRadius; x <= searchRadius; x++)
         {
-            for (int y = -pixelRadius; y <= pixelRadius; y++)
+            for (int y = -searchRadius; y <= searchRadius; y++)
             {
-                float dist = Vector2.Distance(
-                    Vector2.zero, new Vector2(x, y));
+                Vector3Int cellPos = new Vector3Int(
+                    centerCell.x + x,
+                    centerCell.y + y,
+                    centerCell.z);
 
-                if (dist > pixelRadius) continue;
+                Vector3 worldCellCenter = terrainTilemap.GetCellCenterWorld(cellPos);
+                float dist = Vector2.Distance(worldPosition, worldCellCenter);
 
-                Vector3Int cellPos = terrainTilemap.WorldToCell(
-                    new Vector3(
-                        worldPosition.x + x * 0.5f,
-                        worldPosition.y + y * 0.5f,
-                        0));
+                if (dist > radius) continue;
 
                 if (terrainTilemap.GetTile(cellPos) != null)
                 {
@@ -63,6 +84,6 @@ public class TerrainManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"DestroyTerrain: odstraněno {tilesRemoved} tilů");
+        Debug.Log($"Odstraněno {tilesRemoved} tilů");
     }
 }

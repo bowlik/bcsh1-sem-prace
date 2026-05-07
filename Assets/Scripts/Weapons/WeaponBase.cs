@@ -8,25 +8,27 @@ public abstract class WeaponBase : MonoBehaviour
     public GameObject projectilePrefab;
 
     protected MouseController Owner;
-    private bool _hasFired = false;
+    protected bool _hasFired = false;
 
     public void Initialize(MouseController owner)
     {
         Owner = owner;
     }
 
+    public void ResetFired()
+    {
+        _hasFired = false;
+    }
+
     private void OnEnable()
     {
-        // reset pøi zapnutí zbranì
         _hasFired = false;
     }
 
     private void Update()
     {
-        // støílej pouze pokud je myš aktivní a zbraò ještì nevystøelila
         if (Owner == null || !Owner.IsActive) return;
         if (_hasFired) return;
-
         if (Input.GetMouseButtonDown(0))
             Fire();
     }
@@ -43,13 +45,17 @@ public abstract class WeaponBase : MonoBehaviour
 
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorld.z = 0f;
-        Vector2 direction = (mouseWorld - transform.position).normalized;
+        Vector2 direction = (mouseWorld - Owner.transform.position).normalized;
+        Vector3 spawnPos = Owner.transform.position + (Vector3)(direction * 0.8f);
 
-        GameObject proj = Instantiate(
-            projectilePrefab, transform.position, Quaternion.identity);
+        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+        proj.GetComponent<Projectile>()?.SetShooter(Owner.gameObject);
 
         Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
-        rb?.AddForce(direction * shootForce, ForceMode2D.Impulse);
+        if (rb != null)
+            rb.AddForce(direction * shootForce, ForceMode2D.Impulse);
+        else
+            Debug.LogError($"{proj.name} nemá Rigidbody2D!");
 
         TurnManager.Instance?.EndTurn();
     }
