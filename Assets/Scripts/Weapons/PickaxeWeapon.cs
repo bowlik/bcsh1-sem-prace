@@ -4,80 +4,65 @@ using System.Collections;
 public class PickaxeWeapon : WeaponBase
 {
     [Header("Krumpáè")]
-    public float destroyRadius = 0.8f;    // velikost výkopu
-    public int swingCount = 3;            // poèet úderù za tah
-    public float swingCooldown = 0.4f;    // pauza mezi údery
-    public float reach = 1.5f;            // dosah od myši
+    public int tilesToDestroy = 3;
+    public float destroyRadius = 0.8f;
+    public float swingCooldown = 0.4f;
 
     [Header("Efekty")]
-    public GameObject dirtEffectPrefab;   // prefab èástic hlíny
+    public GameObject dirtEffectPrefab;
 
-    private int _swingsLeft;
     private bool _onCooldown = false;
 
     private void OnEnable()
     {
-        _swingsLeft = swingCount;
+        _onCooldown = false;
     }
 
     protected override void Fire()
     {
-        if (_onCooldown || _swingsLeft <= 0) return;
-
-        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorld.z = 0f;
-
-        // Zkontroluj, jestli hráè kliknul v dosahu
-        float dist = Vector2.Distance(Owner.transform.position, mouseWorld);
-        if (dist > reach)
-        {
-            Debug.Log("Pøíliš daleko! Klikni blíže k postavì.");
-            return;
-        }
-
-        StartCoroutine(Swing(mouseWorld));
+        if (_onCooldown) return;
+        StartCoroutine(Swing());
     }
 
-    private IEnumerator Swing(Vector3 targetPos)
+    private IEnumerator Swing()
     {
         _onCooldown = true;
+        _hasFired = true;
 
-        // 1. Vizuální efekt (èástice)
-        if (dirtEffectPrefab != null)
-        {
-            Instantiate(dirtEffectPrefab, targetPos, Quaternion.identity);
-        }
-
-        // 2. Zvukový efekt pøes AudioManager
         AudioManager.Instance?.PlayPickaxe();
 
-        // 3. Samotná destrukce terénu
-        TerrainManager.Instance?.DestroyTerrain(targetPos, destroyRadius);
+        Vector2 pos = Owner.transform.position;
 
-        _swingsLeft--;
-        Debug.Log($"Krumpáè: zbývá {_swingsLeft} úderù");
+        // znièí tiles vlevo od myši
+        for (int i = 1; i <= tilesToDestroy; i++)
+        {
+            Vector2 leftPos = new Vector2(pos.x - i * 0.5f, pos.y);
+            TerrainManager.Instance?.DestroyTerrain(leftPos, destroyRadius);
+
+            if (dirtEffectPrefab != null)
+                Instantiate(dirtEffectPrefab, leftPos, Quaternion.identity);
+        }
+
+        // znièí tiles vpravo od myši
+        for (int i = 1; i <= tilesToDestroy; i++)
+        {
+            Vector2 rightPos = new Vector2(pos.x + i * 0.5f, pos.y);
+            TerrainManager.Instance?.DestroyTerrain(rightPos, destroyRadius);
+
+            if (dirtEffectPrefab != null)
+                Instantiate(dirtEffectPrefab, rightPos, Quaternion.identity);
+        }
 
         yield return new WaitForSeconds(swingCooldown);
-        _onCooldown = false;
 
-        // Po vyèerpání úderù ukonèi tah
-        if (_swingsLeft <= 0)
-        {
-            _swingsLeft = swingCount; // Reset pro další kolo
-            TurnManager.Instance?.EndTurn();
-        }
+        _onCooldown = false;
+        TurnManager.Instance?.EndTurn();
     }
 
     private void OnDrawGizmosSelected()
     {
-        // Zobraz dosah v editoru (dosah kopání a velikost díry)
         if (Owner == null) return;
-
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(Owner.transform.position, reach);
-
-        // Poznámka: destroyRadius je zobrazen u myši, zde jen ilustraènì u hráèe
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, destroyRadius);
+        Gizmos.DrawWireSphere(Owner.transform.position, destroyRadius * tilesToDestroy);
     }
 }

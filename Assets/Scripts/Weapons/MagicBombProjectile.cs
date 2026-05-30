@@ -1,32 +1,33 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Projectile : MonoBehaviour
+[RequireComponent(typeof(Collider2D))]
+public class MagicBombProjectile : MonoBehaviour
 {
     [Header("Nastavení")]
-    public int damage = 30;
-    public float explosionRadius = 1.5f;
-    public bool hasTimer = false;
-    public float timerDuration = 3f;
+    public int damage = 99;
+    public float explosionRadius = 2.5f;
+    public int maxBounces = 2;
 
     [Header("Efekty")]
     public GameObject explosionEffectPrefab;
 
-    private float _timer;
+    private int _bounceCount = 0;
     private bool _exploded = false;
-    protected GameObject _shooter;
+    private GameObject _shooter;
+    private Rigidbody2D _rb;
+    private CameraFollow _camera;
+
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+        _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+    }
 
     private void Start()
     {
-        _timer = timerDuration;
-
-        if (_shooter != null)
-        {
-            Collider2D projCollider = GetComponent<Collider2D>();
-            Collider2D shooterCollider = _shooter.GetComponent<Collider2D>();
-            if (projCollider != null && shooterCollider != null)
-                Physics2D.IgnoreCollision(projCollider, shooterCollider);
-        }
+        _camera = FindFirstObjectByType<CameraFollow>();
+        _camera?.TrackBomb(transform);
     }
 
     public void SetShooter(GameObject shooter)
@@ -39,21 +40,16 @@ public class Projectile : MonoBehaviour
             Physics2D.IgnoreCollision(projCollider, shooterCollider);
     }
 
-    private void Update()
-    {
-        if (hasTimer)
-        {
-            _timer -= Time.deltaTime;
-            if (_timer <= 0f) Explode();
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (_exploded) return;
         if (col.gameObject == _shooter) return;
         if (_shooter != null && col.transform.IsChildOf(_shooter.transform)) return;
-        if (!hasTimer) Explode();
+
+        _bounceCount++;
+
+        if (_bounceCount > maxBounces)
+            Explode();
     }
 
     private void Explode()
@@ -61,15 +57,15 @@ public class Projectile : MonoBehaviour
         if (_exploded) return;
         _exploded = true;
 
+        // zastav sledování granátu
+        _camera?.StopTrackingBomb();
+
         if (explosionEffectPrefab != null)
             Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
 
         AudioManager.Instance?.PlayExplosion();
 
-        if (TerrainManager.Instance != null)
-            TerrainManager.Instance.DestroyTerrain(transform.position, explosionRadius);
-        else
-            Debug.LogError("TerrainManager.Instance je null!");
+        TerrainManager.Instance?.DestroyTerrain(transform.position, explosionRadius);
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             transform.position, explosionRadius);
@@ -94,7 +90,7 @@ public class Projectile : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 }

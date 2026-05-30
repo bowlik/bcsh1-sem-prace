@@ -19,12 +19,10 @@ public class FireballWeapon : WeaponBase
         mouseWorld.z = 0f;
         Vector2 direction = (mouseWorld - Owner.transform.position).normalized;
 
-        // vìtší offset aby nevybuchl hned
         Vector3 spawnPos = Owner.transform.position + (Vector3)(direction * 1.2f);
 
         GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
 
-        // pøedej støelce – projektil ignoruje kolizi s ním
         Projectile p = proj.GetComponent<Projectile>();
         if (p != null)
             p.SetShooter(Owner.gameObject);

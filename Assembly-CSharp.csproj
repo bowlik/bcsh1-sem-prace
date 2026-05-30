@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\Core\GameManager.cs" />
     <Compile Include="Assets\Scripts\Terrain\TerrainManager.cs" />
     <Compile Include="Assets\Scripts\Weapons\FireballWeapon.cs" />
+    <Compile Include="Assets\Scripts\Weapons\MagicBombProjectile.cs" />
     <Compile Include="Assets\Scripts\Weapons\MeleeWeapon.cs" />
     <Compile Include="Assets\Scripts\Core\MapSelector.cs" />
   </ItemGroup>

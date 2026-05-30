@@ -25,7 +25,7 @@ public class MouseController : MonoBehaviour
     private bool _isActive = false;
     private bool _isGrounded = false;
     private float _groundedTimer = 0f;
-    private const float GroundedGrace = 0.15f; // buffer èas
+    private const float GroundedGrace = 0.15f;
 
     public bool IsActive => _isActive;
 
@@ -100,9 +100,7 @@ public class MouseController : MonoBehaviour
         {
             _groundedTimer -= Time.deltaTime;
             if (_groundedTimer <= 0f)
-            {
                 _isGrounded = false;
-            }
         }
     }
 
@@ -132,8 +130,6 @@ public class MouseController : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D col)
     {
-        // místo okamžitého resetu nastavíme timer
-        // myš zùstane "na zemi" ještì 0.15s po opuštìní kontaktu
         _groundedTimer = GroundedGrace;
     }
 
@@ -156,8 +152,25 @@ public class MouseController : MonoBehaviour
     public void SetActive(bool active)
     {
         _isActive = active;
+
         if (activeArrow != null)
             activeArrow.SetActive(active);
+
+        if (!active)
+        {
+            if (_rb != null)
+            {
+                _rb.linearVelocity = new Vector2(0f, _rb.linearVelocity.y);
+                _rb.angularVelocity = 0f;
+            }
+
+            if (_animator != null)
+            {
+                _animator.SetBool("IsWalking", false);
+                _animator.SetBool("IsGrounded", true);
+                _animator.SetFloat("VelocityY", 0f);
+            }
+        }
     }
 
     public void TakeDamage(int damage)
