@@ -48,7 +48,7 @@ public class MouseController : MonoBehaviour
         if (hpBarPrefab != null)
         {
             GameObject bar = Instantiate(hpBarPrefab, transform);
-            bar.transform.localPosition = new Vector3(0, 1.2f, 0);
+            bar.transform.localPosition = new Vector3(0, 2.5f, 0);
             bar.GetComponent<HPBar>()?.Initialize(this);
         }
     }

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HPBar : MonoBehaviour
@@ -15,14 +15,18 @@ public class HPBar : MonoBehaviour
     {
         if (_owner == null) return;
 
-        // nastav v�pl� podle HP
         float ratio = (float)_owner.currentHp / _owner.maxHp;
         fillImage.fillAmount = ratio;
 
-        // barva podle HP
-        fillImage.color = Color.Lerp(Color.red, Color.green, ratio);
+        // zelená → žlutá → červená podle HP
+        if (ratio > 0.5f)
+            fillImage.color = Color.green;
+        else if (ratio > 0.25f)
+            fillImage.color = Color.yellow;
+        else
+            fillImage.color = Color.red;
 
-        // HP bar v�dy sm��uje na kameru
+        // HP bar vždy směřuje na kameru
         transform.rotation = Camera.main.transform.rotation;
     }
 }

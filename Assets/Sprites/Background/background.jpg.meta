@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 36380704d5f795841aa048c9e1bddafc
+guid: 28b6763e51f19154894ab58e097be6ed
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1357700385483210712
-    second: "Sn\xEDmek obrazovky 2026-04-05 115744_0"
+      213: 7961897816519335541
+    second: 2306.w026.n002.3414B.p1.3414_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Sn\xEDmek obrazovky 2026-04-05 115744_0"
+      name: 2306.w026.n002.3414B.p1.3414_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1015
-        height: 671
+        width: 6000
+        height: 2700
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 820ccdb51ba782de0800000000000000
-      internalID: -1357700385483210712
+      spriteID: 57ed79351e75e7e60800000000000000
+      internalID: 7961897816519335541
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Sn\xEDmek obrazovky 2026-04-05 115744_0": -1357700385483210712
+      2306.w026.n002.3414B.p1.3414_0: 7961897816519335541
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

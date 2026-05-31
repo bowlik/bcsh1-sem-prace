@@ -21,36 +21,61 @@ public class EndScreenController : MonoBehaviour
         if (winnerText != null)
         {
             winnerText.text = winner == 0
-                ? "Remíza!"
-                : $"Vyhrál Hráč {winner}! 🎉";
+                ? "Remiza!"
+                : $"Vyhral Hrac {winner}!";
 
             winnerText.color = winner == 1
-                ? new Color(0.3f, 0.7f, 1f)   // modrá pro hráče 1
-                : new Color(1f, 0.4f, 0.4f);   // červená pro hráče 2
+                ? new Color(0.3f, 0.7f, 1f)
+                : new Color(1f, 0.4f, 0.4f);
         }
 
         if (statsText != null)
         {
-            statsText.text = $"Počet kol: {rounds}";
+            var data = ScoreManager.Instance?.GetData();
 
-            if (ScoreManager.Instance != null)
+            statsText.text =
+                $"Kol odehrano: {rounds}\n\n" +
+                $"── Celkove skore ──\n" +
+                $"Hrac 1:  {data?.player1Wins ?? 0} vyher\n" +
+                $"Hrac 2:  {data?.player2Wins ?? 0} vyher\n\n" +
+                $"── Posledni zapasy ──";
+
+            if (data != null && data.history.Count > 0)
             {
-                var data = ScoreManager.Instance.GetData();
-                statsText.text +=
-                    $"\n\nCelkové skóre:\n" +
-                    $"Hráč 1: {data.player1Wins} výher\n" +
-                    $"Hráč 2: {data.player2Wins} výher";
+                int start = Mathf.Max(0, data.history.Count - 3);
+                for (int i = start; i < data.history.Count; i++)
+                {
+                    var match = data.history[i];
+                    statsText.text += $"\n{match.date}  Hrac {match.winner} vyhral";
+                }
+            }
+            else
+            {
+                statsText.text += "\nZadne predchozi zapasy";
             }
         }
     }
 
     public void OnPlayAgainClicked()
     {
-        SceneManager.LoadScene("GameScene");
+        string scene = MapSelector.SelectedScene ?? "GameScene_Goldmine";
+        SceneManager.LoadScene(scene);
     }
 
     public void OnMenuClicked()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void OnQuitClicked()
+    {
+        Application.Quit();
+        Debug.Log("Hra ukoncena");
+    }
+
+    public void OnResetScoreClicked()
+    {
+        ScoreManager.Instance?.ResetScore();
+        ShowResult();
     }
 }

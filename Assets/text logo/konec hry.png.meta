@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c6eeec3520baed5439db17fbb8776687
+guid: 0e39b1b781258b2419f51579ebd3f7f8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5689856812844392592
-    second: blank-white-screen_0
+      213: -7932856274361224021
+    second: konec hry_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -72,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: blank-white-screen_0
+      name: konec hry_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 3840
-        height: 2160
+        x: 382
+        y: 186
+        width: 2184
+        height: 1251
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0902d6800ae66fe40800000000000000
-      internalID: 5689856812844392592
+      spriteID: ba47870af35d8e190800000000000000
+      internalID: -7932856274361224021
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      blank-white-screen_0: 5689856812844392592
+      konec hry_0: -7932856274361224021
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
