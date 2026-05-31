@@ -56,10 +56,23 @@ public class MainMenuController : MonoBehaviour
         if (ScoreManager.Instance == null || scoreText == null) return;
 
         var data = ScoreManager.Instance.GetData();
+
+        if (data.history.Count == 0 && data.player1Wins == 0 && data.player2Wins == 0)
+        {
+            scoreText.text = "Zatím žádné zápasy!";
+            return;
+        }
+
         scoreText.text =
             $"Hráè 1: {data.player1Wins} výher\n" +
             $"Hráè 2: {data.player2Wins} výher\n\n" +
             "--- Poslední zápasy ---\n";
+
+        if (data.history.Count == 0)
+        {
+            scoreText.text += "Žádné zápasy";
+            return;
+        }
 
         int start = Mathf.Max(0, data.history.Count - 5);
         for (int i = start; i < data.history.Count; i++)
