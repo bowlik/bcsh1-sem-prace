@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -20,12 +20,9 @@ public class MainMenuController : MonoBehaviour
     public void OnPlayClicked()
     {
         string scene = MapSelector.SelectedScene;
-
         if (string.IsNullOrEmpty(scene))
             scene = "GameScene_Goldmine";
-
-        Debug.Log($"Naèítám scénu: {scene}");
-        SceneManager.LoadScene(scene);
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
 
     public void OnMapClicked()
@@ -48,7 +45,6 @@ public class MainMenuController : MonoBehaviour
     public void OnQuitClicked()
     {
         Application.Quit();
-        Debug.Log("Hra ukonèena");
     }
 
     private void RefreshScore()
@@ -57,28 +53,23 @@ public class MainMenuController : MonoBehaviour
 
         var data = ScoreManager.Instance.GetData();
 
-        if (data.history.Count == 0 && data.player1Wins == 0 && data.player2Wins == 0)
+        if (data.player1Wins == 0 && data.player2Wins == 0 && data.history.Count == 0)
         {
-            scoreText.text = "Zatím ádné zápasy!";
+            scoreText.text = "ZatÃ­m nebyly odehrÃ¡ny Å¾Ã¡dnÃ© zÃ¡pasy!\n\nZahraj si prvnÃ­ hru\na vÃ½sledky se zobrazÃ­ zde.";
             return;
         }
 
         scoreText.text =
-            $"Hráè 1: {data.player1Wins} vıher\n" +
-            $"Hráè 2: {data.player2Wins} vıher\n\n" +
-            "--- Poslední zápasy ---\n";
-
-        if (data.history.Count == 0)
-        {
-            scoreText.text += "ádné zápasy";
-            return;
-        }
+            $"â”€â”€ CelkovÃ© skÃ³re â”€â”€\n" +
+            $"HrÃ¡Ä 1:  {data.player1Wins} vÃ½her\n" +
+            $"HrÃ¡Ä 2:  {data.player2Wins} vÃ½her\n\n" +
+            $"â”€â”€ PoslednÃ­ zÃ¡pasy â”€â”€\n";
 
         int start = Mathf.Max(0, data.history.Count - 5);
         for (int i = start; i < data.history.Count; i++)
         {
             var match = data.history[i];
-            scoreText.text += $"{match.date}  –  Vyhrál Hráè {match.winner}\n";
+            scoreText.text += $"{match.date}  â€“  HrÃ¡Ä {match.winner} vyhrÃ¡l\n";
         }
     }
 }

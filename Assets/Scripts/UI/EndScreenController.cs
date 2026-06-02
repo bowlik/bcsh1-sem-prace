@@ -32,7 +32,6 @@ public class EndScreenController : MonoBehaviour
         if (statsText != null)
         {
             var data = ScoreManager.Instance?.GetData();
-
             statsText.text =
                 $"Kol odehrano: {rounds}\n\n" +
                 $"── Celkove skore ──\n" +
@@ -58,19 +57,20 @@ public class EndScreenController : MonoBehaviour
 
     public void OnPlayAgainClicked()
     {
-        string scene = MapSelector.SelectedScene ?? "GameScene_Goldmine";
-        SceneManager.LoadScene(scene);
+        string scene = MapSelector.SelectedScene;
+        if (string.IsNullOrEmpty(scene))
+            scene = "GameScene_Goldmine";
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
 
     public void OnMenuClicked()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     public void OnQuitClicked()
     {
         Application.Quit();
-        Debug.Log("Hra ukoncena");
     }
 
     public void OnResetScoreClicked()

@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class TurnManager : MonoBehaviour
 {
@@ -14,6 +13,8 @@ public class TurnManager : MonoBehaviour
     private float _timeLeft;
     private bool _turnActive = false;
     private bool _endingTurn = false;
+    private bool _isGameOver = false;
+    private float _endTurnTimer = -1f;
 
     public MouseController ActiveMouse { get; private set; }
     public float TimeLeft => _timeLeft;
@@ -21,8 +22,24 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        // nová scéna = nová instance vždy vyhraje
+        if (Instance != null && Instance != this)
+            Instance = null;
+
         Instance = this;
+        _currentTeam = 1;
+        _currentMouseIndex = 0;
+        _turnActive = false;
+        _endingTurn = false;
+        _isGameOver = false;
+        _endTurnTimer = -1f;
+        ActiveMouse = null;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
 
     private void Start()
@@ -33,32 +50,57 @@ public class TurnManager : MonoBehaviour
     private IEnumerator StartTurnDelayed()
     {
         yield return new WaitForSeconds(0.5f);
+        if (_isGameOver) yield break;
+        if (GameManager.Instance == null) yield break;
         StartTurn();
     }
 
     private void Update()
     {
-        if (!_turnActive) return;
-        _timeLeft -= Time.deltaTime;
-        if (_timeLeft <= 0f)
-            EndTurn();
+        if (_isGameOver) return;
+
+        if (_turnActive)
+        {
+            _timeLeft -= Time.deltaTime;
+            if (_timeLeft <= 0f)
+                EndTurn();
+        }
+
+        if (_endTurnTimer > 0f)
+        {
+            _endTurnTimer -= Time.deltaTime;
+            if (_endTurnTimer <= 0f)
+            {
+                _endTurnTimer = -1f;
+                ExecuteNextTurn();
+            }
+        }
     }
 
     public void StartTurn()
     {
+        if (_isGameOver) return;
         _endingTurn = false;
+
+        if (GameManager.Instance == null) return;
 
         var team = _currentTeam == 1
             ? GameManager.Instance.Team1
             : GameManager.Instance.Team2;
 
-        if (team.Count == 0) return;
+        if (team == null || team.Count == 0) return;
 
         _currentMouseIndex %= team.Count;
         ActiveMouse = team[_currentMouseIndex];
+
+        if (ActiveMouse == null)
+        {
+            team.RemoveAt(_currentMouseIndex);
+            return;
+        }
+
         ActiveMouse.SetActive(true);
 
-        // resetuj zbranì aktivní myši
         var wm = ActiveMouse.GetComponent<WeaponManager>();
         if (wm != null)
             wm.ResetWeapons();
@@ -72,19 +114,20 @@ public class TurnManager : MonoBehaviour
 
     public void EndTurn()
     {
-        if (_endingTurn) return;
+        if (_endingTurn || _isGameOver) return;
         _endingTurn = true;
         _turnActive = false;
 
         if (ActiveMouse != null)
             ActiveMouse.SetActive(false);
 
-        StartCoroutine(EndTurnDelayed());
+        _endTurnTimer = 1.5f;
     }
 
-    private IEnumerator EndTurnDelayed()
+    private void ExecuteNextTurn()
     {
-        yield return new WaitForSeconds(1.5f);
+        if (_isGameOver) return;
+        if (GameManager.Instance == null) return;
 
         if (_currentTeam == 1)
             _currentTeam = 2;
@@ -95,5 +138,13 @@ public class TurnManager : MonoBehaviour
         }
 
         StartTurn();
+    }
+
+    public void SetGameOver()
+    {
+        _isGameOver = true;
+        _turnActive = false;
+        _endTurnTimer = -1f;
+        StopAllCoroutines();
     }
 }

@@ -20,15 +20,34 @@ public class ScoreData
 
 public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager Instance { get; private set; }
+    private static ScoreManager _instance;
+    public static ScoreManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                // vytvoø automaticky pokud neexistuje
+                GameObject go = new GameObject("ScoreManager");
+                _instance = go.AddComponent<ScoreManager>();
+                DontDestroyOnLoad(go);
+            }
+            return _instance;
+        }
+    }
 
     private ScoreData _data = new();
     private string _savePath;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
         DontDestroyOnLoad(gameObject);
         _savePath = Path.Combine(Application.persistentDataPath, "score.json");
         Load();
@@ -53,14 +72,12 @@ public class ScoreManager : MonoBehaviour
     {
         _data = new ScoreData();
         Save();
-        Debug.Log("Skore resetovano!");
     }
 
     private void Save()
     {
         string json = JsonUtility.ToJson(_data, true);
         File.WriteAllText(_savePath, json);
-        Debug.Log($"Skore ulozeno: {_savePath}");
     }
 
     private void Load()
@@ -68,7 +85,7 @@ public class ScoreManager : MonoBehaviour
         if (!File.Exists(_savePath)) return;
         string json = File.ReadAllText(_savePath);
         _data = JsonUtility.FromJson<ScoreData>(json);
-        Debug.Log($"Skore nacteno – Hrac 1: {_data.player1Wins}, Hrac 2: {_data.player2Wins}");
+        Debug.Log($"Skóre naèteno – Hráè 1: {_data.player1Wins}, Hráè 2: {_data.player2Wins}");
     }
 
     public ScoreData GetData() => _data;

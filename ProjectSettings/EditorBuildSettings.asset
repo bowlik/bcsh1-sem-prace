@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene_Goldmine.unity
     guid: 4716d0caf5230a148a42dde2f9fcdd8c
   - enabled: 1
+    path: Assets/Scenes/GameScene_Treasure.unity
+    guid: 1e1eaf0048516dd4c8879e213201be98
+  - enabled: 1
+    path: Assets/Scenes/GameScene_Throne.unity
+    guid: bb62d8bc36fcc3f499e9da4cc4004b6a
+  - enabled: 1
     path: Assets/Scenes/EndScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:

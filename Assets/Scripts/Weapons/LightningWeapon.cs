@@ -32,27 +32,22 @@ public class LightningWeapon : WeaponBase
         for (int i = 0; i < hitCount; i++)
         {
             RaycastHit2D hit = results[i];
-
             if (hit.collider.gameObject == Owner.gameObject) continue;
             if (hit.collider.transform.IsChildOf(Owner.transform)) continue;
 
             endPoint = hit.point;
 
-            // poškození myši + knockback
             if (hit.collider.TryGetComponent<MouseController>(out var mouse))
             {
                 mouse.TakeDamage(damage);
 
-                // knockback ve smìru blesku
                 Rigidbody2D rb = mouse.GetComponent<Rigidbody2D>();
                 if (rb != null)
                     rb.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
             }
 
-            // zniš terén
             TerrainManager.Instance?.DestroyTerrain(hit.point, 1.5f);
 
-            // spark efekt
             if (sparkEffectPrefab != null)
                 Instantiate(sparkEffectPrefab, hit.point, Quaternion.identity);
 
@@ -65,11 +60,7 @@ public class LightningWeapon : WeaponBase
 
     private IEnumerator ShowLightning(Vector3 start, Vector3 end)
     {
-        if (lightningLine == null)
-        {
-            Debug.LogWarning("LightningWeapon: LineRenderer není pøiøazený!");
-            yield break;
-        }
+        if (lightningLine == null) yield break;
 
         lightningLine.enabled = true;
         lightningLine.SetPosition(0, start);
@@ -77,6 +68,8 @@ public class LightningWeapon : WeaponBase
 
         yield return new WaitForSeconds(flashDuration);
 
-        lightningLine.enabled = false;
+        // null check pøed vypnutím
+        if (lightningLine != null)
+            lightningLine.enabled = false;
     }
 }

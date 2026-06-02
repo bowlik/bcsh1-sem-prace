@@ -17,12 +17,20 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        // nová scéna = nová instance vždy vyhraje
         if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+            Instance = null;
+
         Instance = this;
+        Team1 = new List<MouseController>();
+        Team2 = new List<MouseController>();
+        _roundCount = 0;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
 
     public void RegisterMouse(MouseController mouse, int team)
@@ -45,18 +53,17 @@ public class GameManager : MonoBehaviour
     private void EndGame(int winner)
     {
         Debug.Log($"Vyhrál Hráè {winner}!");
-
         GameResult.WinnerTeam = winner;
         GameResult.RoundsPlayed = _roundCount;
 
+        TurnManager.Instance?.SetGameOver();
         ScoreManager.Instance?.SaveResult(winner, _roundCount);
-
         StartCoroutine(LoadEndScreen());
     }
 
     private IEnumerator LoadEndScreen()
     {
         yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene("EndScene");
+        SceneManager.LoadScene("EndScene", LoadSceneMode.Single);
     }
 }
