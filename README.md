@@ -67,7 +67,6 @@ Mapy sestavené pomocí ai generovaného pozadí a Tile assetů
 
 ### Ukládání dat
 - Ukládání výsledků zápasů a high score (JSON)
-- Načítání map z PNG souborů
 
 ### UI
 - Hlavní menu – nová hra, výběr mapy, quit
